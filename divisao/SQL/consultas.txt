@@ -1,0 +1,64 @@
+--VIEW de colaboradores ativos
+CREATE VIEW vw_colaborador_ativos AS
+SELECT colab.nome_colaborador AS colaborador, colab.email,
+colab.telefone, colab.ativo, car.id_cargo AS cargo, s.id_setor AS setor
+FROM colaborador colab
+INNER JOIN cargo car ON car.id_cargo = colab.id_cargo
+INNER JOIN setor s ON s.id_setor = colab.id_setor;
+
+SELECT * FROM vw_colaborador_ativos 
+
+
+--VIEW de colaboradores desativados
+CREATE VIEW vw_colaborador_desativo AS
+SELECT colab.nome_colaborador AS colaborador, colab.email, colab.telefone, colab.ativo,
+car.id_cargo AS cargo, s.id_setor AS setor, colab.criado_em AS contratrado_em,
+colab.atualizado_em AS dispensado_em
+FROM colaborador colab
+INNER JOIN cargo car ON car.id_cargo = colab.id_cargo
+INNER JOIN setor s ON s.id_setor = colab.id_setor
+WHERE colab.ativo = false;
+
+SELECT * from vw_colaborador_desativo
+
+
+--listar técnicos e suas especialidades
+SELECT c.nome_colaborador AS tecnico, t.especialidade
+FROM TECNICO t
+INNER JOIN COLABORADOR c ON t.id_colaborador = c.id_colaborador;
+
+
+--VIEW de chamados
+CREATE VIEW vw_chamados AS
+SELECT c.protocolo, e.nome_equipamento, colab.nome_colaborador AS solicitante,
+colab_tec.nome_colaborador AS "técnico responsável",
+p.nome_prioridade, s.nome_status, c.data_abertura, c.data_previsao, c.data_encerramento
+FROM chamado c
+INNER JOIN PRIORIDADE p ON p.id_prioridade = c.id_prioridade
+INNER JOIN STATUS s ON s.id_status = c.id_status
+INNER JOIN EQUIPAMENTO e ON e.id_equipamento = c.id_equipamento
+INNER JOIN COLABORADOR colab ON colab.id_colaborador = c.id_colaborador
+INNER JOIN TECNICO t ON t.id_tecnico = c.id_tecnico
+INNER JOIN COLABORADOR colab_tec ON colab_tec.id_colaborador = t.id_colaborador;
+
+SELECT * FROM vw_chamados;
+
+--consulta para ver quais colaborados estão com o equipamento
+SELECT e.nome_equipamento AS "equipamento entrege", c.nome_colaborador AS "colaborador responsável", ec.data_inicio AS "Data de entrega" 
+FROM equipamento_colaborador ec
+INNER JOIN EQUIPAMENTO e ON e.id_equipamento = ec.id_equipamento
+INNER JOIN COLABORADOR c ON c.id_colaborador = ec.id_colaborador;
+
+--consulta para verificar os chamados com prioridade alta ou crítica
+SELECT p.nome_prioridade AS "prioridade do chamado", s.nome_status AS "status do chamado"
+FROM CHAMADO c
+INNER JOIN PRIORIDADE P ON p.id_prioridade = c.id_prioridade
+INNER JOIN STATUS s ON s.id_status = c.id_status
+WHERE nome_prioridade = 'Alta' OR nome_prioridade = 'Crítica';
+
+-consulta para priorizar o chamados com maior urgência
+SELECT p.nome_prioridade AS "prioridade do chamado", s.nome_status AS "status do chamado"
+FROM CHAMADO c
+INNER JOIN PRIORIDADE P ON p.id_prioridade = c.id_prioridade
+INNER JOIN STATUS s ON s.id_status = c.id_status
+ORDER BY p.id_prioridade DESC;

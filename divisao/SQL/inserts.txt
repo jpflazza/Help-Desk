@@ -1,0 +1,298 @@
+-- =========================================
+-- INSERTS SETOR
+-- =========================================
+
+INSERT INTO SETOR (
+    nome_setor,
+    descricao,
+    ativo,
+    criado_em,
+    atualizado_em
+)
+VALUES
+(
+    'TI',
+    'Setor de tecnologia da informação',
+    true,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+),
+(
+    'RH',
+    'Recursos humanos',
+    true,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+),
+(
+    'Financeiro',
+    'Controle financeiro da empresa',
+    true,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
+
+-- =========================================
+-- INSERTS CARGO
+-- =========================================
+
+INSERT INTO CARGO (
+    nome_cargo
+)
+VALUES
+('Analista'),
+('Técnico de Suporte'),
+('Gerente'),
+('Assistente Administrativo');
+
+-- =========================================
+-- INSERTS COLABORADOR
+-- =========================================
+
+INSERT INTO COLABORADOR (
+    id_setor,
+    id_cargo,
+    nome_colaborador,
+    email,
+    telefone,
+    ativo,
+    criado_em,
+    atualizado_em
+)
+VALUES
+(
+    1,
+    2,
+    'Carlos Silva',
+    'carlos.silva@empresa.com',
+    '41999990001',
+    true,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+),
+(
+    1,
+    1,
+    'Marina Souza',
+    'marina.souza@empresa.com',
+    '41999990002',
+    true,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+),
+(
+    2,
+    4,
+    'Fernanda Lima',
+    'fernanda.lima@empresa.com',
+    '41999990003',
+    true,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+),
+(
+    3,
+    3,
+    'Ricardo Alves',
+    'ricardo.alves@empresa.com',
+    '41999990004',
+    true,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
+
+-- =========================================
+-- INSERTS TECNICO
+-- =========================================
+
+INSERT INTO TECNICO (
+    id_colaborador,
+    especialidade
+)
+VALUES
+(
+    1,
+    'Infraestrutura'
+),
+(
+    2,
+    'Banco de Dados'
+);
+
+-- =========================================
+-- INSERTS EQUIPAMENTO
+-- =========================================
+
+INSERT INTO EQUIPAMENTO (
+    id_setor,
+    nome_equipamento,
+    descricao
+)
+VALUES
+(
+    1,
+    'Notebook Dell',
+    'Notebook utilizado pela equipe de TI'
+),
+(
+    2,
+    'Impressora HP',
+    'Impressora do setor de RH'
+),
+(
+    3,
+    'Servidor Financeiro',
+    'Servidor responsável pelo ERP financeiro'
+);
+
+-- =========================================
+-- INSERTS EQUIPAMENTO_COLABORADOR
+-- =========================================
+
+INSERT INTO EQUIPAMENTO_COLABORADOR (
+    id_equipamento,
+    id_colaborador,
+    data_inicio
+)
+VALUES
+(
+    1,
+    1,
+    CURRENT_TIMESTAMP
+),
+(
+    2,
+    3,
+    CURRENT_TIMESTAMP
+),
+(
+    3,
+    4,
+    CURRENT_TIMESTAMP
+);
+
+-- =========================================
+-- INSERTS CATEGORIA_CHAMADO
+-- =========================================
+
+INSERT INTO CATEGORIA_CHAMADO (
+    nome_categoria
+)
+VALUES
+('Hardware'),
+('Software'),
+('Rede'),
+('Acesso');
+
+-- =========================================
+-- INSERTS PRIORIDADE
+-- =========================================
+
+INSERT INTO PRIORIDADE (
+    nome_prioridade
+)
+VALUES
+('Baixa'),
+('Média'),
+('Alta'),
+('Crítica');
+
+-- =========================================
+-- INSERTS STATUS
+-- =========================================
+
+INSERT INTO STATUS (
+    nome_status
+)
+VALUES
+('Aberto'),
+('Em Atendimento'),
+('Aguardando Usuário'),
+('Finalizado');
+
+-- =========================================
+-- INSERTS CHAMADO
+-- =========================================
+
+INSERT INTO CHAMADO (
+    protocolo,
+    id_colaborador,
+    id_categoria,
+    id_equipamento,
+    id_tecnico,
+    titulo,
+    id_prioridade,
+    id_status,
+    data_abertura,
+    data_previsao,
+    data_encerramento,
+    criado_em,
+    atualizado_em
+)
+VALUES
+(
+    'CH000001',
+    3,
+    2,
+    2,
+    1,
+    'Erro ao imprimir documentos',
+    2,
+    2,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP + INTERVAL '2 day',
+    NULL,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+),
+(
+    'CH000002',
+    4,
+    3,
+    3,
+    2,
+    'Servidor sem conexão',
+    4,
+    1,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP + INTERVAL '1 day',
+    NULL,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
+
+-- =========================================
+-- INSERTS TIPO_ATENDIMENTO
+-- =========================================
+
+INSERT INTO TIPO_ATENDIMENTO (
+    nome
+)
+VALUES
+('Remoto'),
+('Presencial'),
+('Telefone');
+
+-- =========================================
+-- INSERTS ATENDIMENTO
+-- =========================================
+
+INSERT INTO ATENDIMENTO (
+    id_chamado,
+    id_tecnico,
+    data_atendimento,
+    id_tipo_atendimento
+)
+VALUES
+(
+    1,
+    1,
+    CURRENT_TIMESTAMP,
+    1
+),
+(
+    2,
+    2,
+    CURRENT_TIMESTAMP,
+    2
+);

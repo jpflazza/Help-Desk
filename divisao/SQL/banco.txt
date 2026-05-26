@@ -1,0 +1,106 @@
+CREATE TABLE SETOR(
+id_setor serial PRIMARY KEY,
+nome_setor varchar (50),
+descricao text,
+ativo boolean,
+criado_em timestamp,
+atualizado_em timestamp
+);
+
+CREATE TABLE CARGO(
+id_cargo serial PRIMARY KEY,
+nome_cargo varchar(50)
+);
+
+CREATE TABLE COLABORADOR(
+id_colaborador serial PRIMARY KEY,
+id_setor integer,
+id_cargo integer,
+nome_colaborador varchar(50),
+email varchar(50) NOT NULL UNIQUE,
+telefone varchar(11),
+ativo boolean,
+criado_em timestamp,
+atualizado_em timestamp,
+CONSTRAINT fk_setor_colaborador FOREIGN KEY (id_setor) REFERENCES SETOR (id_setor),
+CONSTRAINT fk_cargo_colaborador FOREIGN KEY (id_cargo) REFERENCES CARGO (id_cargo)
+);
+
+CREATE TABLE TECNICO(
+id_tecnico serial PRIMARY KEY,
+id_colaborador integer,
+especialidade varchar(50),
+CONSTRAINT fk_colaborador_tecnico FOREIGN KEY (id_colaborador) REFERENCES COLABORADOR(id_colaborador)
+);
+
+CREATE TABLE EQUIPAMENTO(
+id_equipamento serial PRIMARY KEY,
+id_setor integer,
+nome_equipamento varchar (50),
+descricao text,
+CONSTRAINT fk_setor_equipamento FOREIGN KEY (id_setor) REFERENCES SETOR(id_setor)
+);
+
+CREATE TABLE EQUIPAMENTO_COLABORADOR(
+id_equipamento integer,
+id_colaborador integer,
+data_inicio timestamp,
+CONSTRAINT fk_equipamento_equip_colab FOREIGN KEY (id_equipamento) REFERENCES EQUIPAMENTO(id_equipamento),
+CONSTRAINT fk_equipamento_colaborador_colab FOREIGN KEY (id_colaborador) REFERENCES COLABORADOR(id_colaborador)
+
+);
+
+CREATE TABLE CATEGORIA_CHAMADO(
+id_categoria serial PRIMARY KEY,
+nome_categoria varchar(50)
+);
+
+CREATE TABLE PRIORIDADE(
+id_prioridade serial PRIMARY KEY,
+nome_prioridade varchar(50)
+);
+
+CREATE TABLE STATUS(
+id_status serial PRIMARY KEY,
+nome_status varchar(50)
+);
+
+CREATE TABLE CHAMADO(
+id_chamado serial PRIMARY KEY,
+protocolo varchar (10) UNIQUE,
+id_colaborador integer,
+id_categoria integer,
+id_equipamento integer,
+id_tecnico integer,
+titulo varchar (50),
+id_prioridade integer,
+id_status integer,
+data_abertura timestamp,
+data_previsao timestamp,
+data_encerramento timestamp,
+criado_em timestamp,
+atualizado_em timestamp,
+CONSTRAINT fk_colaborador_chamado FOREIGN KEY (id_colaborador) REFERENCES COLABORADOR(id_colaborador),
+CONSTRAINT fk_categoria_chamado FOREIGN KEY (id_categoria) REFERENCES CATEGORIA_CHAMADO(id_categoria),
+CONSTRAINT fk_equipamento_chamado FOREIGN KEY (id_equipamento) REFERENCES EQUIPAMENTO(id_equipamento),
+CONSTRAINT fk_tecnico_chamado FOREIGN KEY (id_tecnico) REFERENCES TECNICO(id_tecnico),
+CONSTRAINT fk_prioridade_chamado FOREIGN KEY (id_prioridade) REFERENCES PRIORIDADE(id_prioridade),
+CONSTRAINT fk_status_chamado FOREIGN KEY (id_status) REFERENCES STATUS(id_status)
+);
+
+CREATE TABLE TIPO_ATENDIMENTO(
+id_tipo serial PRIMARY KEY,
+nome varchar(50)
+);
+
+CREATE TABLE ATENDIMENTO(
+id_atendimento serial PRIMARY KEY,
+id_chamado integer,
+id_tecnico integer,
+data_atendimento timestamp,
+id_tipo_atendimento integer,
+CONSTRAINT fk_tipo_atendimento FOREIGN KEY (id_tipo_atendimento) REFERENCES TIPO_ATENDIMENTO(id_tipo),
+CONSTRAINT fk_chamado_atendimento FOREIGN KEY (id_chamado) REFERENCES CHAMADO(id_chamado),
+CONSTRAINT fk_tecnico_atendimento FOREIGN KEY (id_tecnico) REFERENCES tecnico(id_tecnico)
+
+);
